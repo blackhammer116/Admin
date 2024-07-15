@@ -9,7 +9,7 @@ import { Divider, TextInput } from '@tremor/react';
 import user from '../assets/bg1.jpg'
 import {useState} from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 const GoogleIcon = (props) => (
@@ -19,17 +19,25 @@ const GoogleIcon = (props) => (
 );
 
 export default function Login() {
-    const handleLogin = async () => {
-        const response = await axios.post('http://localhost:5000/admin_login', {
-            data: {
-                username: token.username,
-                password: token.password,
-            },
-        });
-        const res = response.data;
 
-        if (res == true || res == True){
-            <Link to={'/dash'} ></Link>
+   const [formData, setFormData] = useState({
+   username: '',
+   password: '',
+  });
+
+  
+  const navigate = useNavigate();
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+    const handleLogin = async () => {
+        const response = await axios.post('http://127.0.0.1:5000/admin_login', formData);
+        const res = response.data;
+	console.log(res)
+
+        if (res["status"] == true || res["status"] == True){
+	    console.log(res["status"]);
+	    navigate('/dash')
         } else {
             <Link to={'/signin'}></Link>
             alert()
@@ -51,7 +59,7 @@ export default function Login() {
           <h3 className="text-center text-tremor-title font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">
             Enter Credentials to continue
           </h3>
-          <form action='/admin_login'  method="post" className="mt-6">
+          <form action='/admin_login' onSubmit={handleLogin}  method="post" className="mt-6">
             <label
               htmlFor="username"
               className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
@@ -62,7 +70,7 @@ export default function Login() {
               type="username"
               id="username"
               name="username"
-            //   autoComplete="email"
+	      onChange={handleInputChange}
               placeholder="janeSmith@x123"
               className="mt-2"
             />
@@ -76,18 +84,18 @@ export default function Login() {
               type="password"
               id="password"
               name="password"
-            //   autoComplete="email"
-            //   placeholder="janeSmith@x123"
+	      onChange={handleInputChange}
               className="mt-2"
             />
+          </form>
+            <Link to={'/dash'} >
             <button
               type="submit"
               onClick={handleLogin}
               className="mt-4 w-full whitespace-nowrap rounded-tremor-default bg-tremor-brand py-2 text-center text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input hover:bg-tremor-brand-emphasis dark:bg-dark-tremor-brand dark:text-dark-tremor-brand-inverted dark:shadow-dark-tremor-input dark:hover:bg-dark-tremor-brand-emphasis"
             >
               Sign in
-            </button>
-          </form>
+            </button></Link>
         </div>
       </div>
     </>
