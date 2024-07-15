@@ -5,6 +5,42 @@ import {Link} from 'react-router-dom'
 import axios from 'axios'
 
 export default function NewUser() {
+
+    const [formData, setFormData] = useState({
+        f_name: '',
+        l_name: '',
+        m_name: '',
+        dob: '',
+        email: '',
+        p_number: '',
+        username: '',
+        password: '',
+      });
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+      
+        try {
+          await axios.post('http://127.0.0.1:5000/client_signin', formData);
+          // Reset the form data after successful submission
+          setFormData({ 
+            f_name: '',
+            l_name: '',
+            m_name: '',
+            dob: '',
+            email: '',
+            p_number: '',
+            username: '',
+            password: '', });
+        } catch (error) {
+          console.error('Error submitting form:', error);
+        }
+      };
+
+      const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+      };
+
   return (
     <>
       <div className="sm:mx-auto sm:max-w-2xl">
@@ -14,7 +50,7 @@ export default function NewUser() {
         <p className="mt-1 text-tremor-default leading-6 text-tremor-content dark:text-dark-tremor-content">
           fill the neccessary information
         </p>
-        <form action="#" method="post" className="mt-8">
+        <form action="/client_signin" onSubmit={handleSubmit} method="post" className="mt-8">
           <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
             <div className="col-span-full sm:col-span-3">
               <label
@@ -30,6 +66,8 @@ export default function NewUser() {
                 name="f_name"
                 autoComplete="first-name"
                 placeholder="First name"
+                value={formData.f_name}
+                onChange={handleInputChange}
                 className="mt-2"
                 required
               />
@@ -44,16 +82,18 @@ export default function NewUser() {
               </label>
               <TextInput
                 type="text"
-                id="last-name"
-                name="last-name"
+                id="l_name"
+                name="l_name"
                 autoComplete="last-name"
                 placeholder="Last name"
+                value={formData.l_name}
+                onChange={handleInputChange}
                 className="mt-2"
                 required
               />
               <div className="col-span-full sm:col-span-3">
               <label
-                htmlFor="first-name"
+                htmlFor="Middle-name"
                 className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong"
               >
                 Middle name
@@ -61,10 +101,12 @@ export default function NewUser() {
               </label>
               <TextInput
                 type="text"
-                id="first-name"
-                name="first-name"
-                autoComplete="first-name"
-                placeholder="First name"
+                id="m_name"
+                name="m_name"
+                autoComplete="middle-name"
+                placeholder="middle name"
+                value={formData.m_name}
+                onChange={handleInputChange}
                 className="mt-2"
               />
             </div>
@@ -83,6 +125,8 @@ export default function NewUser() {
                 name="email"
                 autoComplete="email"
                 placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
                 className="mt-2"
                 required
               />
@@ -99,6 +143,8 @@ export default function NewUser() {
                 id="dob"
                 name="dob"
                 className="mt-2"
+                value={formData.dob}
+                onChange={handleInputChange}
               />
             </div>
             <div className="col-span-full sm:col-span-2">
@@ -113,7 +159,10 @@ export default function NewUser() {
                 id="p_number"
                 name="p_number"
                 placeholder='+251-*******'
+                value={formData.p_number}
+                onChange={handleInputChange}
                 className="mt-2"
+                required
               />
             </div>
             <div className="col-span-full sm:col-span-2">
@@ -129,7 +178,10 @@ export default function NewUser() {
                 name="username"
                 autoComplete="address-level1"
                 placeholder="username"
+                value={formData.username}
+                onChange={handleInputChange}
                 className="mt-2"
+                required
               />
             </div>
             <div className="col-span-full sm:col-span-2">
@@ -144,6 +196,9 @@ export default function NewUser() {
                 name="password"
                 placeholder="password"
                 className="mt-2"
+                value={formData.password}
+                onChange={handleInputChange}
+                required
               />
             </div>
           </div>
