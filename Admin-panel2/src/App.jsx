@@ -10,17 +10,20 @@ import Employees from './components/Employees.jsx'
 import AssignTask from './components/AssignTask.jsx'
 import Service from './components/Service.jsx'
 import Pending from './components/Pending.jsx'
+import NewUser from './components/NewUser.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div>   
+    <div>
       
-    <BrowserRouter>
+      
+    <BrowserRouter> 
   
-  <Routes>
+   <Routes>
     <Route  index element={<Signin/>}/>
+    <Route  path='/newUser' element={<NewUser />} />
     <Route  path="/signin" element={<Signin/>}/>
     <Route  path="/users" element={<Users/>}/>
     <Route  path="/employee" element={<Employees/>}/>
