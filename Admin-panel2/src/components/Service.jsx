@@ -1,5 +1,6 @@
 // 'use client';
-
+import axios from "axios"
+import { useState, useEffect } from 'react'
 import {
     Table,
     TableBody,
@@ -9,65 +10,22 @@ import {
     TableRow,
   } from '@tremor/react';
   
-  const data = [
-    {
-      workspace: 'sales_by_day_api',
-      owner: 'John Doe',
-      status: 'Live',
-      costs: '$3,509.00',
-      region: 'US-West 1',
-      capacity: '99%',
-      lastEdited: '23/09/2023 13:00',
-    },
-    {
-      workspace: 'marketing_campaign',
-      owner: 'Jane Smith',
-      status: 'Live',
-      costs: '$5,720.00',
-      region: 'US-East 2',
-      capacity: '80%',
-      lastEdited: '22/09/2023 10:45',
-    },
-    {
-      workspace: 'test_environment',
-      owner: 'David Clark',
-      status: 'Inactive',
-      costs: '$800.00',
-      region: 'EU-Central 1',
-      capacity: '40%',
-      lastEdited: '25/09/2023 16:20',
-    },
-    {
-      workspace: 'sales_campaign',
-      owner: 'Jane Smith',
-      status: 'Live',
-      costs: '$5,720.00',
-      region: 'US-East 2',
-      capacity: '80%',
-      lastEdited: '22/09/2023 10:45',
-    },
-    {
-      workspace: 'development_env',
-      owner: 'Mike Johnson',
-      status: 'Inactive',
-      costs: '$4,200.00',
-      region: 'EU-West 1',
-      capacity: '60%',
-      lastEdited: '21/09/2023 14:30',
-    },
-    {
-      workspace: 'new_workspace_1',
-      owner: 'Alice Brown',
-      status: 'Inactive',
-      costs: '$2,100.00',
-      region: 'US-West 2',
-      capacity: '75%',
-      lastEdited: '24/09/2023 09:15',
-    },
-  ];
 
   
   export default function Service() {
+    const [data, setData] = useState([])
+    
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/get_services');
+          setData(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+      fetchData();
+    }, []);
     return (
       <>
         <div className="sm:flex sm:items-center sm:justify-between sm:space-x-10">
@@ -89,6 +47,9 @@ import {
               <TableHeaderCell className="text-tremor-content-strong dark:text-dark-tremor-content-strong">
                 Service Name
               </TableHeaderCell>
+              <TableHeaderCell className="text-tremor-content-strong dark:text-dark-tremor-content-strong">
+                Service Description
+              </TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -98,14 +59,11 @@ import {
                 className="even:bg-tremor-background-muted even:dark:bg-dark-tremor-background-muted"
               >
                 <TableCell className="font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                  {item.workspace}
+                  {item.S_id}
                 </TableCell>
-                <TableCell>{item.owner}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{item.region}</TableCell>
-                <TableCell>{item.capacity}</TableCell>
-                <TableCell className="text-right">{item.costs}</TableCell>
-                <TableCell className="text-right">{item.lastEdited}</TableCell>
+                <TableCell>{item.S_id}</TableCell>
+                <TableCell>{item.s_name}</TableCell>
+                <TableCell>{item.s_desc}</TableCell>
               </TableRow>
             ))}
           </TableBody>

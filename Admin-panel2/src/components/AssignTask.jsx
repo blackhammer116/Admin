@@ -3,21 +3,25 @@
 import { Divider, TextInput } from '@tremor/react';
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { useState } from 'react'
 
 export default function AssignTask() {
 
-    const handleAssignTask = async () => {
-        const response = await axios.post('http://localhost:5000/assign_task', {
-            data: {
-                P_id: token.P_id,
-                E_id: token.E_id
-            },
-        });
-        const res = response.data
-        if (res){
-            <Link to={'/pending'}></Link>           
-        }
-    }
+    const [formData, setFormData] = useState({
+   P_id: '',
+   E_id: '',
+  });
+	const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+	const handleAssignTask = async () => {
+          const response = await axios.post('http://127.0.0.1:5000/assign_task', formData);
+	  setFormData({
+		  P_id: '',
+		  E_id: '',
+	  })
+        };
+    
 
 
   return (
@@ -29,7 +33,7 @@ export default function AssignTask() {
         <p className="mt-1 text-tremor-default leading-6 text-tremor-content dark:text-dark-tremor-content">
           Enter the Pending ID and the employee's Id you wish to assign
         </p>
-        <form action="/assign_task" method="post" className="mt-8">
+        <form onSubmit={handleAssignTask} method="post" className="mt-8">
           <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-6">
             <div className="col-span-full sm:col-span-3">
               <label
@@ -44,6 +48,8 @@ export default function AssignTask() {
                 id="P_id"
                 name="P_id"
                 placeholder="Pending Id"
+	        value = {formData.P_id}
+	        onChange={handleInputChange}
                 className="mt-2"
                 required
               />
@@ -61,6 +67,8 @@ export default function AssignTask() {
                 id="E_id"
                 name="E_id"
                 placeholder="Employee's ID"
+	        value = {formData.E_id}
+	        onChange={handleInputChange}
                 className="mt-2"
                 required
               />
@@ -77,7 +85,7 @@ export default function AssignTask() {
             </button>
             <button
               type="submit"
-              onClick={handleAssignTask}
+	      onClick={handleAssignTask}
               className="whitespace-nowrap rounded-tremor-default bg-tremor-brand px-4 py-2.5 text-tremor-default font-medium text-tremor-brand-inverted shadow-tremor-input hover:bg-tremor-brand-emphasis dark:bg-dark-tremor-brand dark:text-dark-tremor-brand-inverted dark:shadow-dark-tremor-input dark:hover:bg-dark-tremor-brand-emphasis"
             >
               Submit

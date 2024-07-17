@@ -2,6 +2,7 @@ import DashChartCard from "../components/DashChartCards"
 import DashChartLine from "../components/DashChartLine"
 import SideNav from "../components/SideNav"
 import Users from "../components/Users"
+import NewUser from "../components/NewUser"
 import Pending from "../components/Pending"
 import AssignTask from "../components/AssignTask"
 import Employees from "../components/Employees"
@@ -13,8 +14,8 @@ import { UserRoundCheck, SquareGanttChart, ListChecks, CircleDotDashed } from 'l
 
 
 export default function Dash(){
-    const [currentComp,setCurrentComp]=useState('dash')
 
+const [currentComp,setCurrentComp]=useState('dash');
 const renderComp=()=>{
   switch(currentComp){
     case 'dash':
@@ -29,6 +30,8 @@ const renderComp=()=>{
       return <Users/>
     case 'employee':
         return <Employees />
+    case 'newUsers':
+      return <NewUser />
     default:
       return <DashMain/>
   }

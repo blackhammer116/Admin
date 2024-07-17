@@ -2,7 +2,7 @@
 
 import { Divider, TextInput } from '@tremor/react';
 import {useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 
 export default function NewUser() {
@@ -17,12 +17,13 @@ export default function NewUser() {
         username: '',
         password: '',
       });
+    const [stat, setStat] = useState(null);
 
       const handleSubmit = async (e) => {
         e.preventDefault();
       
         try {
-          await axios.post('http://127.0.0.1:5000/signup', formData);
+          const response = await axios.post('http://127.0.0.1:5000/signup', formData);
           // Reset the form data after successful submission
           setFormData({ 
             f_name: '',
@@ -33,6 +34,9 @@ export default function NewUser() {
             p_number: '',
             username: '',
             password: '', });
+	  if (response.data){
+		  setStat(response.data)
+	  }
         } catch (error) {
           console.error('Error submitting form:', error);
         }
